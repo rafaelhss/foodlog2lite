@@ -1,0 +1,62 @@
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<div ng-app="foodlog2lite" ng-controller="myCtrl" >
+  
+  Today: <input type="number" ng-model="userDay" ng-init="userDay=getCurrDay()"
+                ng-change="checkDayForm()">
+ <button ng-click="userDay=userDay-1">&lt;</button>                   
+  <button ng-click="userDay=userDay+1">&gt;</button>                  
+  
+                </p>
+ <div class="form">
+   <button id="btnAdd" ng-click="showForm = !showForm" ng-show=!showForm>ADD</button>
+  </div> 
+
+ <div class="form" ng-show="showForm">
+  Name:  <select ng-model="newMeal.name">
+  <option ng-repeat="p in plan" value="{{p.name}}">{{p.time}} - {{p.name}}</option>
+</select>
+   <p>Day: <input type="text" ng-model="newMeal.day" ng-init="newMeal.day=getCurrDay()"></p>
+   
+    <p>Time:  <input type="text" ng-model="newMeal.time" ng-init="newMeal.time=getCurrTime()"></p>
+   <p>Food:  <input type="text" ng-model="newMeal.food[0]"></p>
+   <p>Score: <input type="range" min="1" max="10" ng-model="newMeal.score"></p>
+ 
+
+  
+  <button ng-click="addMeal(newMeal)" ng-init="count=0">OK</button>
+  </div>
+  <!-- The Timeline -->
+  <div class="food" id="plan">
+  <ul class="timeline" ng-style=getMaxHeight()>
+    <!-- Item 1 -->
+    <li ng-repeat="p in plan track by $index" ng-style={{p.style}}>
+      <div class="direction-r">
+        <div class="flag-wrapper">
+          <span class="flag">{{p.name}}</span>
+          <span class="time-wrapper"><span class="time">{{p.time}}</span></span>
+        </div>
+        <div class="desc"><p ng-repeat="f in p.food">{{f}}</p></div>
+      </div>
+    </li>
+
+  </ul>
+  </div>
+  
+  <div class="food" id="actual">
+  <ul class="timeline" ng-style=getMaxHeight()>
+    <li ng-repeat="a in actual |filter: onFilterActualMeals track by $index" ng-style={{a.style}}>
+      <div class="direction-l">
+        <div class="flag-wrapper">
+          <span class="flag" ng-style="{{a.style.flagstyle}}">{{a.name}}</span>
+          <span class="time-wrapper"><span class="time">{{a.time}}</span></span>
+        </div>
+           <div class="desc"><p ng-repeat="f in a.food track by $index">{{f}}</p></div>
+      </div>
+    </li>
+
+  </ul>
+  </div>
+  
+</div>  
